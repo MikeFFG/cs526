@@ -16,7 +16,7 @@ public class IntLinkedBinaryTree extends LinkedBinaryTree<Integer>{
 	public Position<Integer> add(Position<Integer> p, Integer e){
 
 		// implement this method
-		
+		return p;
 	}
 	
 	/**

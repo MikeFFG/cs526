@@ -19,6 +19,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * ******** New Methods are at the bottom of class **********
  */
 package com.cs526.hw3;
 
@@ -43,6 +45,9 @@ public class ArrayList<E> implements List<E> {
 
   /** Current number of elements in the list. */
   private int size = 0;                    // current number of elements
+  
+  /** Holds the current capacity information of the array */
+  private int currentCapacity;
 
   // constructors
   /** Creates an array list with default initial capacity. */
@@ -52,6 +57,7 @@ public class ArrayList<E> implements List<E> {
   @SuppressWarnings({"unchecked"})
   public ArrayList(int capacity) {         // constructs list with given capacity
     data = (E[]) new Object[capacity];     // safe cast; compiler may give warning
+    currentCapacity = capacity;			   // saves the current capacity of the ArrayList
   }
 
   // public methods
@@ -140,6 +146,7 @@ public class ArrayList<E> implements List<E> {
     for (int k=0; k < size; k++)
       temp[k] = data[k];
     data = temp;                               // start using the new array
+    currentCapacity = capacity;				   // Update instance variable
   }
 
   //---------------- nested ArrayIterator class ----------------
@@ -219,6 +226,7 @@ public class ArrayList<E> implements List<E> {
   public static void main(String[] args) {
 	  
 	  ArrayList<String> stringList = new ArrayList<>(10);
+	  ArrayList<String> secondList = new ArrayList<>(10);
 	  
 	  stringList.add(0, "Java");
 	  stringList.add(0, "with");
@@ -226,13 +234,51 @@ public class ArrayList<E> implements List<E> {
 	  stringList.add(0, "Data");
 	  stringList.printList();
 	  
-	  stringList.remove(2);
-	  stringList.printList();
+	  // Test addAll method
+	  secondList.add(0, "Test");
+	  secondList.addAll(stringList);
+	  secondList.printList();
 	  
-	  stringList.set(2, "Python");
+	  // Test capacity
+	  System.out.println(secondList.currentCapacity);
+	  secondList.ensureCapacity(50);
+	  System.out.println(secondList.currentCapacity);
+	  
+	  // Test remove
+	  stringList.remove("with");
 	  stringList.printList();
-
+	  stringList.add(0, "with");
+	  stringList.add(4, "with");
+	  stringList.printList();
+	  stringList.remove("with");
+	  stringList.printList();
   }
   
+  /* NEW METHODS */
+  public void addAll(ArrayList<E> l) {
+	  Iterator<E> iterator = l.iterator();
+	  
+	  while(iterator.hasNext()) {
+		 add(size(), iterator.next());
+	  }
+  }
   
+  public void ensureCapacity(int minCapacity) {
+	  if (minCapacity > currentCapacity) {
+		  resize(minCapacity);
+	  }
+  }
+  
+  public boolean remove(E e) {
+	  Iterator<E> iterator = iterator();
+	  
+	  while(iterator.hasNext()) {
+		  if (iterator.next().equals(e)) {
+			  iterator.remove();
+			  return true;
+		  }
+	  }
+	  return false;
+  }
+   
 }
