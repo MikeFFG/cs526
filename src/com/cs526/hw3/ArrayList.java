@@ -300,6 +300,10 @@ public class ArrayList<E> implements List<E> {
   }
   
   /* NEW METHODS */
+  /**
+   * Adds an ArrayList to the end of the current ArrayList
+   * @param l - the other ArrayList to add to the current one
+   */
   public void addAll(ArrayList<E> l) {
 	  Iterator<E> iterator = l.iterator();
 	  
@@ -312,12 +316,24 @@ public class ArrayList<E> implements List<E> {
 	  }
   }
   
+  /**
+   * Using the resize method, ensures the array has the capacity
+   * specified in the argument. If the argument is less than the current
+   * size, ArrayList remains unchanged.
+   * @param minCapacity
+   */
   public void ensureCapacity(int minCapacity) {
 	  if (minCapacity > currentCapacity) {
 		  resize(minCapacity);
 	  }
   }
   
+  /**
+   * Removes the first occurence of a specific item in the ArrayList.
+   * Note that this is not an index, but the actual item.
+   * @param e - the item to be deleted
+   * @return true if item is found and deleted. False otherwise
+   */
   public boolean remove(E e) {
 	  Iterator<E> iterator = iterator();
 	  
@@ -330,12 +346,17 @@ public class ArrayList<E> implements List<E> {
 	  return false;
   }
   
+  /**
+   * Removes a range of items in the ArrayList
+   * @param fromIndex - index of first item to delete
+   * @param toIndex - index to stop at. Note this is not deleted (exclusive range)
+   */
   public void removeRange(int fromIndex, int toIndex) {
 	  // Check that we have two valid indexes
 	  checkIndex(fromIndex, size());
 	  checkIndex(toIndex, size());
 	  
-	  // Check whether we actually have a range
+	  // Check whether we actually have a valid range
 	  if (toIndex < fromIndex) {
 		  throw new IllegalArgumentException();
 	  }
@@ -345,6 +366,10 @@ public class ArrayList<E> implements List<E> {
 	  }
   }
   
+  /**
+   * Uses the resize(int) method to trim to the current size by passing in 
+   * size() as the argument.
+   */
   public void trimToSize() {
 	  resize(size());
   }
