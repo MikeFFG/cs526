@@ -21,6 +21,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
  * ******** New Methods are at the bottom of class **********
+ * 
  */
 package com.cs526.hw3;
 
@@ -351,7 +352,8 @@ public class ArrayList<E> implements List<E> {
    * @param fromIndex - index of first item to delete
    * @param toIndex - index to stop at. Note this is not deleted (exclusive range)
    */
-  public void removeRange(int fromIndex, int toIndex) throws IndexOutOfBoundsException {
+  public void removeRange(int fromIndex, int toIndex) throws IndexOutOfBoundsException, 
+  		IllegalArgumentException {
 	  // Check that we have two valid indexes
 	  checkIndex(fromIndex, size());
 	  checkIndex(toIndex, size());
