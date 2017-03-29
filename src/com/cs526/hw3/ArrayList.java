@@ -252,6 +252,17 @@ public class ArrayList<E> implements List<E> {
 	  stringList.printList();
 	  stringList.remove("with");
 	  stringList.printList();
+	  
+	  // Test removeRange
+	  ArrayList<Integer> intList = new ArrayList<>(10);
+	  for (int i = 0; i < 10; i++) {
+		  intList.add(i, i);
+	  }
+	  intList.printList();
+	  intList.removeRange(2, 4);
+	  intList.printList();
+	  intList.removeRange(4, 6);
+	  intList.printList();
   }
   
   /* NEW METHODS */
@@ -279,6 +290,21 @@ public class ArrayList<E> implements List<E> {
 		  }
 	  }
 	  return false;
+  }
+  
+  public void removeRange(int fromIndex, int toIndex) {
+	  // Check that we have two valid indexes
+	  checkIndex(fromIndex, size());
+	  checkIndex(toIndex, size());
+	  
+	  // Check whether we actually have a range
+	  if (toIndex < fromIndex) {
+		  throw new IllegalArgumentException();
+	  }
+	  
+	  for(int i = fromIndex; i <= toIndex; i++) {
+		  remove(fromIndex);
+	  }
   }
    
 }
