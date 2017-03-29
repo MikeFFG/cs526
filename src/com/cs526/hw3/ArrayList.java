@@ -251,6 +251,19 @@ public class ArrayList<E> implements List<E> {
 	  secondList.addAll(stringList);
 	  secondList.printList();
 	  
+	  // Test addAll method properly doubles capacity
+	  ArrayList<Integer> listOfTwenty = new ArrayList<>(20);
+	  for (int i = 0; i < 15; i++) {
+		  listOfTwenty.add(i, i);
+	  }
+	  ArrayList<Integer> listOfTen = new ArrayList<>(10);
+	  for (int i = 0; i < listOfTen.currentCapacity; i++) {
+		  listOfTen.add(i, i);
+	  }
+	  listOfTwenty.addAll(listOfTen);
+	  listOfTwenty.printList();
+	  System.out.println(listOfTwenty.currentCapacity);
+	  
 	  // Test ensureCapacity(int)
 	  System.out.println("\n\nTest the ensureCapacity method...");
 	  System.out.println(secondList.currentCapacity);
@@ -289,6 +302,10 @@ public class ArrayList<E> implements List<E> {
   /* NEW METHODS */
   public void addAll(ArrayList<E> l) {
 	  Iterator<E> iterator = l.iterator();
+	  
+	  if (size() + l.size() > currentCapacity) {
+		  ensureCapacity((size() + l.size()) * 2);
+	  }
 	  
 	  while(iterator.hasNext()) {
 		 add(size(), iterator.next());
