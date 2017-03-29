@@ -351,7 +351,7 @@ public class ArrayList<E> implements List<E> {
    * @param fromIndex - index of first item to delete
    * @param toIndex - index to stop at. Note this is not deleted (exclusive range)
    */
-  public void removeRange(int fromIndex, int toIndex) {
+  public void removeRange(int fromIndex, int toIndex) throws IndexOutOfBoundsException {
 	  // Check that we have two valid indexes
 	  checkIndex(fromIndex, size());
 	  checkIndex(toIndex, size());
