@@ -108,7 +108,7 @@ public class ArrayList<E> implements List<E> {
   public void add(int i, E e) throws IndexOutOfBoundsException {
     checkIndex(i, size + 1);
     if (size == data.length)               // not enough capacity
-      resize(2 * data.length);             // so double the current capacity
+      ensureCapacity(2 * data.length);     // so double the current capacity
     for (int k=size-1; k >= i; k--)        // start by shifting rightmost
       data[k+1] = data[k];
     data[i] = e;                           // ready to place the new element
@@ -263,6 +263,11 @@ public class ArrayList<E> implements List<E> {
 	  intList.printList();
 	  intList.removeRange(4, 6);
 	  intList.printList();
+	  
+	  // Test trimToSize()
+	  System.out.println(intList.currentCapacity);
+	  intList.trimToSize();
+	  System.out.println(intList.currentCapacity);
   }
   
   /* NEW METHODS */
