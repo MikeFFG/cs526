@@ -225,6 +225,8 @@ public class ArrayList<E> implements List<E> {
   
   public static void main(String[] args) {
 	  
+	  // Original Tests
+	  System.out.println("Some basic tests...");
 	  ArrayList<String> stringList = new ArrayList<>(10);
 	  ArrayList<String> secondList = new ArrayList<>(10);
 	  
@@ -234,17 +236,29 @@ public class ArrayList<E> implements List<E> {
 	  stringList.add(0, "Data");
 	  stringList.printList();
 	  
+	  // Test we dynamically raise size
+	  System.out.println("\n\nTest we dynamically double size when capacity is reached...");
+	  ArrayList<String> smallList = new ArrayList<>(2);
+	  System.out.println(smallList.currentCapacity);
+	  smallList.add(0, "zero");
+	  smallList.add(1, "one");
+	  smallList.add(2, "two");
+	  System.out.println(smallList.currentCapacity);
+	  
 	  // Test addAll(ArrayList<E>) method
+	  System.out.println("\n\nTest the addAll method...");
 	  secondList.add(0, "Test");
 	  secondList.addAll(stringList);
 	  secondList.printList();
 	  
 	  // Test ensureCapacity(int)
+	  System.out.println("\n\nTest the ensureCapacity method...");
 	  System.out.println(secondList.currentCapacity);
 	  secondList.ensureCapacity(50);
 	  System.out.println(secondList.currentCapacity);
 	  
 	  // Test remove(E)
+	  System.out.println("\n\nTest the remove method...");
 	  stringList.remove("with");
 	  stringList.printList();
 	  stringList.add(0, "with");
@@ -254,6 +268,7 @@ public class ArrayList<E> implements List<E> {
 	  stringList.printList();
 	  
 	  // Test removeRange(int, int)
+	  System.out.println("\n\nTest the removeRange method...");
 	  ArrayList<Integer> intList = new ArrayList<>(10);
 	  for (int i = 0; i < 10; i++) {
 		  intList.add(i, i);
@@ -265,6 +280,7 @@ public class ArrayList<E> implements List<E> {
 	  intList.printList();
 	  
 	  // Test trimToSize()
+	  System.out.println("\n\nTest the trimToSize method...");
 	  System.out.println(intList.currentCapacity);
 	  intList.trimToSize();
 	  System.out.println(intList.currentCapacity);
