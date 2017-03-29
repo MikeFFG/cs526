@@ -234,17 +234,17 @@ public class ArrayList<E> implements List<E> {
 	  stringList.add(0, "Data");
 	  stringList.printList();
 	  
-	  // Test addAll method
+	  // Test addAll(ArrayList<E>) method
 	  secondList.add(0, "Test");
 	  secondList.addAll(stringList);
 	  secondList.printList();
 	  
-	  // Test capacity
+	  // Test ensureCapacity(int)
 	  System.out.println(secondList.currentCapacity);
 	  secondList.ensureCapacity(50);
 	  System.out.println(secondList.currentCapacity);
 	  
-	  // Test remove
+	  // Test remove(E)
 	  stringList.remove("with");
 	  stringList.printList();
 	  stringList.add(0, "with");
@@ -253,7 +253,7 @@ public class ArrayList<E> implements List<E> {
 	  stringList.remove("with");
 	  stringList.printList();
 	  
-	  // Test removeRange
+	  // Test removeRange(int, int)
 	  ArrayList<Integer> intList = new ArrayList<>(10);
 	  for (int i = 0; i < 10; i++) {
 		  intList.add(i, i);
@@ -302,9 +302,13 @@ public class ArrayList<E> implements List<E> {
 		  throw new IllegalArgumentException();
 	  }
 	  
-	  for(int i = fromIndex; i <= toIndex; i++) {
+	  for(int i = fromIndex; i < toIndex; i++) {
 		  remove(fromIndex);
 	  }
+  }
+  
+  public void trimToSize() {
+	  resize(size());
   }
    
 }
