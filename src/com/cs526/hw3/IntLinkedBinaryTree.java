@@ -96,8 +96,8 @@ public class IntLinkedBinaryTree extends LinkedBinaryTree<Integer>{
 		
 		
 		// print all integers in the tree in increasing order
-		// after adding above four integers, the following should be printed
-		// 50 70 100 150
+		// after adding above 7 integers, the following should be printed
+		// 1 47 50 70 100 150 1000
 		System.out.println("Printing all integers in tree in increasing order: ");
 		inorderPrint(t.root, t);
 		
@@ -126,7 +126,11 @@ public class IntLinkedBinaryTree extends LinkedBinaryTree<Integer>{
 			}
 			
 			// Make sure the resulting tree has 1000 distinct integers
-			System.out.println("Resulting tree has " + t.size() + " distinct integers.");
+			if (t.size() != 1000) {
+				throw new RuntimeException();
+			} else {
+				System.out.println("Resulting tree has " + t.size() + " distinct integers.");
+			}
 			
 			// determine the height of the resulting tree and add to totalHeight
 			totalHeight += t.height(t.root());
