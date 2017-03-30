@@ -15,7 +15,31 @@ public class IntLinkedBinaryTree extends LinkedBinaryTree<Integer>{
 	 */
 	public Position<Integer> add(Position<Integer> p, Integer e){
 
-		// implement this method
+		if (p == null) {					// tree is empty so add as root
+			return addRoot(e);				// Add e as root and return the position
+		}
+		
+		Position<Integer> x = p;
+		Position<Integer> y = x;
+		while (x != null) {
+			if (x.getElement() == e) {
+				return null;
+			} else if (x.getElement() > e) {
+				y = x;
+				x = left(x);
+			} else {
+				y = x;
+				x = right(x);
+			}
+		}
+		
+		Node<Integer> temp = createNode(e, null, null, null); 
+		if (y.getElement() > e) {
+			addLeft(y, e);
+		} else {
+			addRight(y, e);
+		}
+		
 		return p;
 	}
 	
@@ -31,16 +55,28 @@ public class IntLinkedBinaryTree extends LinkedBinaryTree<Integer>{
 		
 	}
 	
+	public static void inorderPrint(Position<Integer> p, IntLinkedBinaryTree t) {
+		if (t.left(p) != null) {
+			inorderPrint(t.left(p), t);
+		}
+		
+		System.out.print(p.getElement() + " ");
+		
+		if (t.right(p) != null) {
+			inorderPrint(t.right(p), t);
+		}
+	}
+	
 	public static void main(String[] args) {
 		
 		// create a new binary tree instance
 		IntLinkedBinaryTree t =   new IntLinkedBinaryTree();
 		
 		// add some integers
-		// t.add(t.root, 100);
-		// t.add(t.root, 50);
-		// t.add(t.root, 150);
-		// t.add(t.root, 70);
+		 t.add(t.root, 100);
+		 t.add(t.root, 50);
+		 t.add(t.root, 150);
+		 t.add(t.root, 70);
 		// test with more integers and addMultiple method
 		
 		
@@ -48,7 +84,7 @@ public class IntLinkedBinaryTree extends LinkedBinaryTree<Integer>{
 		// print all integers in the tree in increasing order
 		// after adding above four integers, the following should be printed
 		// 50 70 100 150
-		
+		inorderPrint(t.root, t);
 		
 		
 		
