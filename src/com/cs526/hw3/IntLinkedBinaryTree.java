@@ -50,7 +50,9 @@ public class IntLinkedBinaryTree extends LinkedBinaryTree<Integer>{
 	 */
 	public void addMultiple(Integer... a ){
 		
-		// implement this method
+		for (int num : a) {
+			add(this.root(), num);
+		}
 
 		
 	}
@@ -70,7 +72,7 @@ public class IntLinkedBinaryTree extends LinkedBinaryTree<Integer>{
 	public static void main(String[] args) {
 		
 		// create a new binary tree instance
-		IntLinkedBinaryTree t =   new IntLinkedBinaryTree();
+		IntLinkedBinaryTree t = new IntLinkedBinaryTree();
 		
 		// add some integers
 		 t.add(t.root, 100);
@@ -78,34 +80,48 @@ public class IntLinkedBinaryTree extends LinkedBinaryTree<Integer>{
 		 t.add(t.root, 150);
 		 t.add(t.root, 70);
 		// test with more integers and addMultiple method
-		
+		t.addMultiple(1,1000, 47);
 		
 		
 		// print all integers in the tree in increasing order
 		// after adding above four integers, the following should be printed
 		// 50 70 100 150
 		inorderPrint(t.root, t);
-		
+		System.out.println("\n");
 		
 		
 		// experimentally determine the average height of a binary search tree
 		// clear the tree before beginning this experiment
-		// repeat 100 times
+		t = new IntLinkedBinaryTree();
 		
+		// repeat 100 times
 		int maxIteration = 100;
 		
+		int totalHeight = 0;
+		
 		for (int i= 0; i<maxIteration; i++){
-			
 			// begin with an empty tree in each iteration
+			t = new IntLinkedBinaryTree();
+			
 			// generate 1000 random integers in the range [0, 999999]
+			int[] randomInts = new Random().ints(0, 999999).distinct().limit(1000).toArray();
+					
 			// and add them to the tree, one at a time
 			// using the add method you implemented
-			// make sure the resulting tree has 1000 distinct integers
-			// determine the height of the resulting tree
+			for (int j = 0; j < randomInts.length; j++) {
+				t.add(t.root(), randomInts[j]);
+			}
 			
+			// make sure the resulting tree has 1000 distinct integers
+			System.out.println("Resulting tree has " + t.size() + " distinct integers.");
+			// determine the height of the resulting tree
+			totalHeight += t.height(t.root());
 		}
 		
 		// calculate and display the average height of the 100 trees
+		int averageHeight = totalHeight / 100;
+		
+		System.out.println("\nThe average height of the 100 trees is " + averageHeight);
 	}
 
 }
