@@ -106,8 +106,6 @@ public class IntLinkedBinaryTree extends LinkedBinaryTree<Integer>{
 		
 		// experimentally determine the average height of a binary search tree
 		// clear the tree before beginning this experiment
-		t = new IntLinkedBinaryTree();
-		
 		// repeat 100 times
 		int maxIteration = 100;
 		
