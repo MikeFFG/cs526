@@ -31,6 +31,9 @@ import java.util.NoSuchElementException;
 /**
  * Realization of a list by means of a dynamic array. This is a simplified version
  * of the java.util.ArrayList class.
+ * 
+ * **** New Methods are at the bottom of the class, but there are some updates
+ * sprinkled through the old methods as well - mburke ****
  *
  * @author Michael T. Goodrich
  * @author Roberto Tamassia
@@ -224,27 +227,33 @@ public class ArrayList<E> implements List<E> {
 	  System.out.println();
   }
   
+  /**
+   * Main class used for testing the new methods
+   * @param args
+   */
   public static void main(String[] args) {
 	  
 	  // Original Tests
-	  System.out.println("Some basic tests...");
+	  System.out.println("Some basic tests of the add method...");
 	  ArrayList<String> stringList = new ArrayList<>(10);
 	  ArrayList<String> secondList = new ArrayList<>(10);
 	  
+	  // Test the add method
 	  stringList.add(0, "Java");
 	  stringList.add(0, "with");
 	  stringList.add(0, "Structure");
 	  stringList.add(0, "Data");
 	  stringList.printList();
 	  
-	  // Test we dynamically raise size
+	  // Test we dynamically raise size when we hit the limit of our current capacity
 	  System.out.println("\n\nTest we dynamically double size when capacity is reached...");
 	  ArrayList<String> smallList = new ArrayList<>(2);
-	  System.out.println(smallList.currentCapacity);
+	  System.out.println("Current capcity: " + smallList.currentCapacity);
+	  System.out.println("Now we will add 3 items and should end up with a capacity of 4");
 	  smallList.add(0, "zero");
 	  smallList.add(1, "one");
 	  smallList.add(2, "two");
-	  System.out.println(smallList.currentCapacity);
+	  System.out.println("Capacity after adding 3 items: " + smallList.currentCapacity);
 	  
 	  // Test addAll(ArrayList<E>) method
 	  System.out.println("\n\nTest the addAll method...");
@@ -253,6 +262,7 @@ public class ArrayList<E> implements List<E> {
 	  secondList.printList();
 	  
 	  // Test addAll method properly doubles capacity
+	  System.out.println("\n\nTest the addAll method properly doubles capacity...");
 	  ArrayList<Integer> listOfTwenty = new ArrayList<>(20);
 	  for (int i = 0; i < 15; i++) {
 		  listOfTwenty.add(i, i);
@@ -261,43 +271,56 @@ public class ArrayList<E> implements List<E> {
 	  for (int i = 0; i < listOfTen.currentCapacity; i++) {
 		  listOfTen.add(i, i);
 	  }
+	  System.out.println("One list of 15 items (but a capacity of 20) is " +
+			  			 "having a list of ten items added to it. (10 + 15) * 2 = 50.");
 	  listOfTwenty.addAll(listOfTen);
 	  listOfTwenty.printList();
-	  System.out.println(listOfTwenty.currentCapacity);
+	  System.out.println("Current capacity after mergins lists: " + listOfTwenty.currentCapacity);
 	  
 	  // Test ensureCapacity(int)
 	  System.out.println("\n\nTest the ensureCapacity method...");
-	  System.out.println(secondList.currentCapacity);
+	  System.out.println("Original capacity: " + secondList.currentCapacity);
+	  System.out.println("Calling ensureCapacity(50)");
 	  secondList.ensureCapacity(50);
-	  System.out.println(secondList.currentCapacity);
+	  System.out.println("New capacity: " + secondList.currentCapacity);
 	  
 	  // Test remove(E)
 	  System.out.println("\n\nTest the remove method...");
+	  System.out.println("Original list: ");
+	  stringList.printList();
+	  System.out.println("Removing `with`: ");
 	  stringList.remove("with");
 	  stringList.printList();
+	  System.out.println("Adding two `with`s:");
 	  stringList.add(0, "with");
 	  stringList.add(4, "with");
 	  stringList.printList();
+	  System.out.println("Removing only first `with`:");
 	  stringList.remove("with");
 	  stringList.printList();
 	  
 	  // Test removeRange(int, int)
-	  System.out.println("\n\nTest the removeRange method...");
+	  System.out.println("\n\nTest the removeRange method...\n");
 	  ArrayList<Integer> intList = new ArrayList<>(10);
 	  for (int i = 0; i < 10; i++) {
 		  intList.add(i, i);
 	  }
+	  System.out.println("Original list:");
 	  intList.printList();
 	  intList.removeRange(2, 4);
+	  System.out.println("\nAfter removeRange(2,4):");
 	  intList.printList();
 	  intList.removeRange(4, 6);
+	  System.out.println("\nAfter removeRange(4,6):");
 	  intList.printList();
 	  
 	  // Test trimToSize()
 	  System.out.println("\n\nTest the trimToSize method...");
-	  System.out.println(intList.currentCapacity);
+	  System.out.println("Current capacity of intList is: " + intList.currentCapacity);
+	  System.out.println("Current size of intList is: " + intList.size());
 	  intList.trimToSize();
-	  System.out.println(intList.currentCapacity);
+	  System.out.println("Final capacity of intList is after trimToSize() call: " 
+			  			+ intList.currentCapacity);
   }
   
   /* NEW METHODS */
