@@ -2,6 +2,12 @@ package com.cs526.hw3;
 
 import java.util.*;
 
+/**
+ * Class that implements a LinkedBinaryTree to create a 
+ * Binary Search Tree with integers
+ * 
+ * @author Mike Burke
+ */
 public class IntLinkedBinaryTree extends LinkedBinaryTree<Integer>{
 
 	// define necessary instance variables and methods, including a constructor(s)
@@ -15,53 +21,59 @@ public class IntLinkedBinaryTree extends LinkedBinaryTree<Integer>{
 	 */
 	public Position<Integer> add(Position<Integer> p, Integer e){
 
-		if (p == null) {					// tree is empty so add as root
-			return addRoot(e);				// Add e as root and return the position
+		if (p == null) {						// tree is empty so add as root
+			return addRoot(e);					// Add e as root and return the position
 		}
 		
-		Position<Integer> x = p;
-		Position<Integer> y = x;
-		while (x != null) {
-			if (x.getElement() == e) {
+		Position<Integer> x = p;				// Create temp position equal to root
+		Position<Integer> y = x;				// Create another temp position equal to root
+		while (x != null) {						// Loop until we hit an empty position
+			if (x.getElement() == e) {			// Return null if this is a duplicate
 				return null;
-			} else if (x.getElement() > e) {
-				y = x;
-				x = left(x);
-			} else {
-				y = x;
-				x = right(x);
+			} else if (x.getElement() > e) {	// If element in x is greater than new element
+				y = x;							// Set y to x
+				x = left(x);					// Set x to the left child of x
+			} else {							// If element in x is smaller than new element
+				y = x;							// Set y to x
+				x = right(x);					// Set x to the right child of x
 			}
 		}
-		
-		Node<Integer> temp = createNode(e, null, null, null); 
-		if (y.getElement() > e) {
-			addLeft(y, e);
-		} else {
-			addRight(y, e);
+
+		// At the end of the loop, y will equal the correct last non-null position
+		if (y.getElement() > e) { 				// If y is greater than e, add e as left child
+			p = addLeft(y, e);
+		} else {								// If y is less than e, add e as right child
+			p = addRight(y, e);
 		}
 		
-		return p;
+		return p;								// Return reference to new node
 	}
 	
 	/**
 	 * Add all integers passed as arguments to this tree
-	 * @param a This formal parameter has the passed integers
+	 * @param a - This parameter has the integers to add
 	 * @postcondition: All integers have been added
 	 */
 	public void addMultiple(Integer... a ){
-		
+		// Use for each loop to iterate over array and add each using add method
 		for (int num : a) {
 			add(this.root(), num);
 		}
-
-		
 	}
 	
+	/**
+	 * A simple inOrder traversal of the tree that prints each element
+	 * Note that after writing this method I did notice that there is a 
+	 * Tree.inOrder() that returns an iterable of the items that I could have used
+	 * but I already wrote the method so decided to keep it.
+	 * @param p - The position to check
+	 * @param t - The IntLinkedBinaryTree to traverse
+	 */
 	public static void inorderPrint(Position<Integer> p, IntLinkedBinaryTree t) {
 		if (t.left(p) != null) {
 			inorderPrint(t.left(p), t);
 		}
-		
+
 		System.out.print(p.getElement() + " ");
 		
 		if (t.right(p) != null) {
@@ -86,7 +98,9 @@ public class IntLinkedBinaryTree extends LinkedBinaryTree<Integer>{
 		// print all integers in the tree in increasing order
 		// after adding above four integers, the following should be printed
 		// 50 70 100 150
+		System.out.println("Printing all integers in tree in increasing order: ");
 		inorderPrint(t.root, t);
+		
 		System.out.println("\n");
 		
 		
@@ -97,6 +111,7 @@ public class IntLinkedBinaryTree extends LinkedBinaryTree<Integer>{
 		// repeat 100 times
 		int maxIteration = 100;
 		
+		// Saves the total height.
 		int totalHeight = 0;
 		
 		for (int i= 0; i<maxIteration; i++){
@@ -112,15 +127,15 @@ public class IntLinkedBinaryTree extends LinkedBinaryTree<Integer>{
 				t.add(t.root(), randomInts[j]);
 			}
 			
-			// make sure the resulting tree has 1000 distinct integers
+			// Make sure the resulting tree has 1000 distinct integers
 			System.out.println("Resulting tree has " + t.size() + " distinct integers.");
-			// determine the height of the resulting tree
+			
+			// determine the height of the resulting tree and add to totalHeight
 			totalHeight += t.height(t.root());
 		}
 		
 		// calculate and display the average height of the 100 trees
-		int averageHeight = totalHeight / 100;
-		
+		int averageHeight = totalHeight / maxIteration;
 		System.out.println("\nThe average height of the 100 trees is " + averageHeight);
 	}
 
