@@ -325,16 +325,19 @@ public class ArrayList<E> implements List<E> {
   
   /* NEW METHODS */
   /**
-   * Adds an ArrayList to the end of the current ArrayList
+   * Adds an ArrayList to the end of the current ArrayList (in order)
    * @param l - the other ArrayList to add to the current one
    */
   public void addAll(ArrayList<E> l) {
+	  // Create iterator of other list
 	  Iterator<E> iterator = l.iterator();
 	  
+	  // Ensure the capacity is double the combined list as indicated in requirements
 	  if (size() + l.size() > currentCapacity) {
 		  ensureCapacity((size() + l.size()) * 2);
 	  }
 	  
+	  // Iterate over list l and add each element to the end of the current list
 	  while(iterator.hasNext()) {
 		 add(size(), iterator.next());
 	  }
@@ -353,21 +356,24 @@ public class ArrayList<E> implements List<E> {
   }
   
   /**
-   * Removes the first occurence of a specific item in the ArrayList.
+   * Removes the first occurrence of a specific item in the ArrayList.
    * Note that this is not an index, but the actual item.
    * @param e - the item to be deleted
    * @return true if item is found and deleted. False otherwise
    */
   public boolean remove(E e) {
+	  // Create iterator of our ArrayList
 	  Iterator<E> iterator = iterator();
 	  
+	  // Iterate over ArrayList
 	  while(iterator.hasNext()) {
+		  // If we find the item, remove it and return true
 		  if (iterator.next().equals(e)) {
 			  iterator.remove();
 			  return true;
 		  }
 	  }
-	  return false;
+	  return false; // If we get here, we didn't find the item so we return false
   }
   
   /**
@@ -386,6 +392,11 @@ public class ArrayList<E> implements List<E> {
 		  throw new IllegalArgumentException();
 	  }
 	  
+	  /* Iterate over the range and remove each item.
+	   * Note that the toIndex is exclusive so is not included in the deletion.
+	   * We can simply use remove(fromIndex), because as we remove each item, the remove()
+	   * method shifts items so each further item that we need to remove gets shifted into place.
+	   */
 	  for(int i = fromIndex; i < toIndex; i++) {
 		  remove(fromIndex);
 	  }
