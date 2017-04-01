@@ -33,7 +33,7 @@ import java.util.NoSuchElementException;
  * of the java.util.ArrayList class.
  * 
  * **** New Methods are at the bottom of the class, but there are some updates
- * sprinkled through the old methods as well - mburke ****
+ * sprinkled throughout the old methods as well - mburke ****
  *
  * @author Michael T. Goodrich
  * @author Roberto Tamassia
@@ -228,7 +228,7 @@ public class ArrayList<E> implements List<E> {
   }
   
   /**
-   * Main class used for testing the new methods
+   * Main method used for testing the new methods
    * @param args
    */
   public static void main(String[] args) {
