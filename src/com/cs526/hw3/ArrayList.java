@@ -333,7 +333,7 @@ public class ArrayList<E> implements List<E> {
 	  Iterator<E> iterator = l.iterator();
 	  
 	  // Ensure the capacity is double the combined list as indicated in requirements
-	  if (size() + l.size() > currentCapacity) {
+	  if (size() + l.size() >= currentCapacity) {
 		  ensureCapacity((size() + l.size()) * 2);
 	  }
 	  
