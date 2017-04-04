@@ -5,12 +5,34 @@ public class Process {
 	private int arrivalTime;
 	private int duration;
 	private int priority;
+	private int waitTime;
+	private int startTime;
 	
 	public Process(int id, int priority, int duration, int arrivalTime) {
 		this.id = id;
 		this.priority = priority;
 		this.duration = duration;
 		this.arrivalTime = arrivalTime;
+	}
+	
+	public void setWaitTime(int waitTime) {
+		this.waitTime = waitTime;
+	}
+	
+	public int getWaitTime() {
+		return waitTime;
+	}
+	
+	public void setStartTime(int startTime) {
+		this.startTime = startTime;
+	}
+	
+	public int getStartTime() {
+		return startTime;
+	}
+	
+	public int getEndTime() {
+		return startTime + duration - 1;
 	}
 
 	public int getId() {

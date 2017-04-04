@@ -16,31 +16,44 @@ public class ProcessScheduling {
 		ArrayList<Process> processList = loadProcessListFromFile(inputFile);
 		HeapAdaptablePriorityQueue<Integer, Process> priorityQueue = new HeapAdaptablePriorityQueue<>();
 		
-		int currentTime = 0;
+		// Initialize variables
+		int currentTime = 1;
 		boolean running = false;
-		int startTime = 0;
 		Process currentlyRunning = null;
 		
+		// Main loop
 		while(!processList.isEmpty()) {
+			// Find the process with the earliest arrival time
 			Process p = getProcessWithLowestArrivalTime(processList);
+			
+			// If the arrival time is less than current time, add process to queue
 			if (p.getArrivalTime() <= currentTime) {
 				priorityQueue.insert(p.getPriority(), p);
 				processList.remove(p);
 			}
 			
+			/*
+			 *  If there are processes in the queue and nothing is running
+			 *  remove the lowest priority in the queue and start running it.
+			 */
 			if (!priorityQueue.isEmpty() && running == false) {
 				currentlyRunning = priorityQueue.removeMin().getValue();
 				running = true;
-				startTime = currentTime;
+				currentlyRunning.setStartTime(currentTime);
 			}
 			
-			if (currentlyRunning != null) {
-				if (startTime + currentlyRunning.getDuration() <= currentTime) {
-					printRemovedProcess(currentlyRunning, currentTime);
-					running = false;
-				}
+			/*
+			 * If the process that is running has finished
+			 * update the running flag, the wait times and the priorities
+			 */
+			if (currentlyRunning != null &&
+					currentlyRunning.getEndTime() <= currentTime) {
+				printRemovedProcess(currentlyRunning, currentTime);
+				running = false;
+				updateWaitTimes(processList);
 			}
 			
+			// Increment time
 			currentTime++;
 		}
 		
@@ -50,16 +63,29 @@ public class ProcessScheduling {
  		}
 	}
 	
+	public static void updateWaitTimes(ArrayList<Process> processList) {
+		
+	}
+	
+	/**
+	 * Prints the process as it is removed
+	 * @param p - the process to print
+	 * @param currentTime - the currentTime that the process is being removed
+	 */
 	public static void printRemovedProcess(Process p, int currentTime) {
-		int waitTime = currentTime - p.getArrivalTime() - p.getDuration();
 		System.out.println("Process removed from queue is: id = " + p.getId() +
-				", at time " + currentTime + ", wait time = " + waitTime);
+				", at time " + p.getStartTime() + ", wait time = " + p.getWaitTime());
 		System.out.println("\tProcess id = " + p.getId());
 		System.out.println("\tPriority = " + p.getPriority());
 		System.out.println("\tArrival = " + p.getArrivalTime());
 		System.out.println("\tDuration = " + p.getDuration());
 	} 
 	
+	/**
+	 * Loads the ArrayList<Process> data structure from the inputFile
+	 * @param inputFile - should be the path to the input.txt file that you wish to test against
+	 * @return - a new filled out ArrayList<Process> data structure
+	 */
 	public static ArrayList<Process> loadProcessListFromFile(String inputFile) {
 		BufferedReader br = null;
 		FileReader file = null;
@@ -95,6 +121,11 @@ public class ProcessScheduling {
 		return processList;
 	}
 	
+	/**
+	 * 
+	 * @param processList - the processList to work on
+	 * @return - the Process from the processList with the lowest arrival time
+	 */
 	public static Process getProcessWithLowestArrivalTime(ArrayList<Process> processList) {
 		Process earliestProcess = processList.get(0);
 		for (Process process : processList) {
