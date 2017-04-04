@@ -64,7 +64,7 @@ public class IntLinkedBinaryTree extends LinkedBinaryTree<Integer>{
 	/**
 	 * A simple inOrder traversal of the tree that prints each element
 	 * Note that after writing this method I did notice that there is a 
-	 * Tree.inOrder() that returns an iterable of the items that I could have used
+	 * Tree.inOrder() method that returns an iterable of the items that I could have used
 	 * but I already wrote the method so decided to keep it.
 	 * @param p - The position to check
 	 * @param t - The IntLinkedBinaryTree to traverse
@@ -81,6 +81,10 @@ public class IntLinkedBinaryTree extends LinkedBinaryTree<Integer>{
 		}
 	}
 	
+	/**
+	 * Main method for testing the rest of the class
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		
 		// create a new binary tree instance
