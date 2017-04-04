@@ -59,14 +59,28 @@ public class ProcessScheduling {
 		}
 		
 		while(!priorityQueue.isEmpty()) {
-			printRemovedProcess(priorityQueue.removeMin().getValue(), currentTime);
+			if (running == false) {
+				currentlyRunning = priorityQueue.removeMin().getValue();
+				running = true;
+				currentlyRunning.setStartTime(currentTime);
+				printRemovedProcess(priorityQueue.removeMin().getValue(), currentTime);
+			}
+			
+			if (currentlyRunning != null &&
+					currentlyRunning.getEndTime() <= currentTime) {
+				
+				running = false;
+				updateWaitTimesAndPriorities(processList, currentTime);
+			}
+
+			currentTime++;
  		}
 	}
 	
 	public static void updateWaitTimesAndPriorities(ArrayList<Process> processList, int currentTime) {
 		for (Process p : processList) {
 			p.setWaitTime(currentTime);
-			if (p.getWaitTime() >= MAX_WAIT_TIME) {
+			if (p.getWaitTime() > MAX_WAIT_TIME) {
 				p.setPriority(p.getPriority() - 1);
 			}
 		}
