@@ -15,8 +15,10 @@ public class Process {
 		this.arrivalTime = arrivalTime;
 	}
 	
-	public void setWaitTime(int waitTime) {
-		this.waitTime = waitTime;
+	public void setWaitTime(int currentTime) {
+		if (currentTime - arrivalTime > 0) {
+			waitTime = currentTime - arrivalTime;
+		}
 	}
 	
 	public int getWaitTime() {

@@ -40,6 +40,7 @@ public class ProcessScheduling {
 				currentlyRunning = priorityQueue.removeMin().getValue();
 				running = true;
 				currentlyRunning.setStartTime(currentTime);
+				printRemovedProcess(currentlyRunning, currentTime);
 			}
 			
 			/*
@@ -48,9 +49,9 @@ public class ProcessScheduling {
 			 */
 			if (currentlyRunning != null &&
 					currentlyRunning.getEndTime() <= currentTime) {
-				printRemovedProcess(currentlyRunning, currentTime);
+				
 				running = false;
-				updateWaitTimes(processList);
+				updateWaitTimesAndPriorities(processList, currentTime);
 			}
 			
 			// Increment time
@@ -59,13 +60,18 @@ public class ProcessScheduling {
 		
 		while(!priorityQueue.isEmpty()) {
 			printRemovedProcess(priorityQueue.removeMin().getValue(), currentTime);
-			currentTime++;
  		}
 	}
 	
-	public static void updateWaitTimes(ArrayList<Process> processList) {
-		
+	public static void updateWaitTimesAndPriorities(ArrayList<Process> processList, int currentTime) {
+		for (Process p : processList) {
+			p.setWaitTime(currentTime);
+			if (p.getWaitTime() >= MAX_WAIT_TIME) {
+				p.setPriority(p.getPriority() - 1);
+			}
+		}
 	}
+	
 	
 	/**
 	 * Prints the process as it is removed
@@ -73,8 +79,9 @@ public class ProcessScheduling {
 	 * @param currentTime - the currentTime that the process is being removed
 	 */
 	public static void printRemovedProcess(Process p, int currentTime) {
+		int waitTime = currentTime - p.getArrivalTime();
 		System.out.println("Process removed from queue is: id = " + p.getId() +
-				", at time " + p.getStartTime() + ", wait time = " + p.getWaitTime());
+				", at time " + p.getStartTime() + ", wait time = " + waitTime);
 		System.out.println("\tProcess id = " + p.getId());
 		System.out.println("\tPriority = " + p.getPriority());
 		System.out.println("\tArrival = " + p.getArrivalTime());
