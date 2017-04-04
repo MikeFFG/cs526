@@ -17,9 +17,11 @@ public class ProcessScheduling {
 		HeapAdaptablePriorityQueue<Integer, Process> priorityQueue = new HeapAdaptablePriorityQueue<>();
 		
 		// Initialize variables
-		int currentTime = 1;
+		int currentTime = 0;
 		boolean running = false;
 		Process currentlyRunning = null;
+		double totalWaitTime = 0;
+		int size = processList.size();
 		
 		// Main loop
 		while(!processList.isEmpty()) {
@@ -41,6 +43,10 @@ public class ProcessScheduling {
 				running = true;
 				currentlyRunning.setStartTime(currentTime);
 				printRemovedProcess(currentlyRunning, currentTime);
+				totalWaitTime = totalWaitTime + currentTime - currentlyRunning.getArrivalTime();
+				for (Entry<Integer, Process> e : priorityQueue.heap) {
+					System.out.println(e.getKey() + " " + e.getValue().getId());
+				}
 			}
 			
 			/*
@@ -51,7 +57,7 @@ public class ProcessScheduling {
 					currentlyRunning.getEndTime() <= currentTime) {
 				
 				running = false;
-				updateWaitTimesAndPriorities(processList, currentTime);
+				updateWaitTimesAndPriorities(priorityQueue, currentTime);
 			}
 			
 			// Increment time
@@ -63,25 +69,34 @@ public class ProcessScheduling {
 				currentlyRunning = priorityQueue.removeMin().getValue();
 				running = true;
 				currentlyRunning.setStartTime(currentTime);
-				printRemovedProcess(priorityQueue.removeMin().getValue(), currentTime);
+				printRemovedProcess(currentlyRunning, currentTime);
+				totalWaitTime = totalWaitTime + currentTime - currentlyRunning.getArrivalTime();
+				for (Entry<Integer, Process> e : priorityQueue.heap) {
+					System.out.println(e.getKey() + " " + e.getValue().getId());
+				}
 			}
 			
 			if (currentlyRunning != null &&
 					currentlyRunning.getEndTime() <= currentTime) {
 				
 				running = false;
-				updateWaitTimesAndPriorities(processList, currentTime);
+				updateWaitTimesAndPriorities(priorityQueue, currentTime);
 			}
 
 			currentTime++;
  		}
+		
+		System.out.println("Total wait time = " + totalWaitTime);
+		System.out.println("Average wait time = " + totalWaitTime / size);
 	}
 	
-	public static void updateWaitTimesAndPriorities(ArrayList<Process> processList, int currentTime) {
-		for (Process p : processList) {
-			p.setWaitTime(currentTime);
-			if (p.getWaitTime() > MAX_WAIT_TIME) {
-				p.setPriority(p.getPriority() - 1);
+	public static void updateWaitTimesAndPriorities(
+			HeapAdaptablePriorityQueue<Integer, Process> priorityQueue, int currentTime) {
+		for (Entry<Integer, Process> e : priorityQueue.heap) {
+			e.getValue().setWaitTime(currentTime);
+			if (e.getValue().getWaitTime() > MAX_WAIT_TIME) {
+				e.getValue().setPriority(e.getValue().getPriority() - 1);
+				priorityQueue.replaceKey(e, e.getValue().getPriority());
 			}
 		}
 	}
@@ -96,10 +111,11 @@ public class ProcessScheduling {
 		int waitTime = currentTime - p.getArrivalTime();
 		System.out.println("Process removed from queue is: id = " + p.getId() +
 				", at time " + p.getStartTime() + ", wait time = " + waitTime);
-		System.out.println("\tProcess id = " + p.getId());
+		System.out.println("Process id = " + p.getId());
 		System.out.println("\tPriority = " + p.getPriority());
 		System.out.println("\tArrival = " + p.getArrivalTime());
 		System.out.println("\tDuration = " + p.getDuration());
+		System.out.println("");
 	} 
 	
 	/**

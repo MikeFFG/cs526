@@ -65,8 +65,18 @@ public class Process {
 		return priority;
 	}
 
+	/**
+	 * 
+	 * @param priority - 
+	 */
 	public void setPriority(int priority) {
-		this.priority = priority;
+		if (priority >= 1 && priority <= 10) {
+			this.priority = priority;
+		} else if (priority < 1){
+			this.priority = 1;
+		} else {
+			this.priority = 10;
+		}
 	}
 	
 	
