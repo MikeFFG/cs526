@@ -1,5 +1,12 @@
 package com.cs526.hw4;
 
+/**
+ * Model class to save information on individual
+ * processes.
+ * 
+ * @author Michael Burke
+ *
+ */
 public class Process {
 	private int id;
 	private int arrivalTime;
@@ -66,8 +73,8 @@ public class Process {
 	}
 
 	/**
-	 * 
-	 * @param priority - 
+	 * Sets the priority internally on the class
+	 * @param priority - the new priority
 	 */
 	public void setPriority(int priority) {
 		if (priority >= 1 && priority <= 10) {
