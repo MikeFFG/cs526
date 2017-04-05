@@ -38,7 +38,7 @@ public class ProcessScheduling {
 				new HeapAdaptablePriorityQueue<>();
 		
 		// Initialize variables
-		int currentTime = 1;					// Stores the current time 
+		int currentTime = 0;					// Stores the current time 
 		boolean running = false;				// Stores whether or not a process is running 
 		Process currentlyRunning = null;		// Stores the currently running process
 		double totalWaitTime = 0;				// Stores the total wait time
@@ -95,8 +95,6 @@ public class ProcessScheduling {
 			if (currentlyRunning != null &&
 					currentlyRunning.getEndTime() <= currentTime) {
 				running = false; // Update running flag
-				System.out.println("CurrentlyRunning is " + currentlyRunning.getId());
-				System.out.println("Current Time is " + currentTime);
 				updatePriorities(priorityQueue, currentTime); // Update priorities
 			}
 			
@@ -127,7 +125,7 @@ public class ProcessScheduling {
 		for (Entry<Integer, Process> e : priorityQueue.heap) {
 			
 			// If the wait time is greater than the MAX_WAIT_TIME, update the priority
-			if (calculateWaitTime(currentTime, e.getValue().getArrivalTime()) >= MAX_WAIT_TIME) {
+			if (calculateWaitTime(currentTime, e.getValue().getArrivalTime()) > MAX_WAIT_TIME) {
 				e.getValue().setPriority(e.getValue().getPriority() - 1);
 				priorityQueue.replaceKey(e, e.getValue().getPriority());
 			}
