@@ -22,15 +22,15 @@ public class Process {
 		this.arrivalTime = arrivalTime;
 	}
 	
-	public void setWaitTime(int currentTime) {
-		if (currentTime - arrivalTime > 0) {
-			waitTime = currentTime - arrivalTime;
-		}
-	}
-	
-	public int getWaitTime() {
-		return waitTime;
-	}
+//	public void setWaitTime(int currentTime) {
+//		if (currentTime - arrivalTime > 0) {
+//			waitTime = currentTime - arrivalTime;
+//		}
+//	}
+//	
+//	public int getWaitTime() {
+//		return waitTime;
+//	}
 	
 	public void setStartTime(int startTime) {
 		this.startTime = startTime;

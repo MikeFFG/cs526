@@ -55,19 +55,21 @@ public class ProcessScheduling {
 		 *  Main loop while the processList (data structure "D" in
 		 *  project description/pseudocode) is not empty
 		 */
-		while(!processList.isEmpty()) {
+		while(!processList.isEmpty() || !priorityQueue.isEmpty()) {
 			// Find the process with the earliest arrival time
-			Process p = getProcessWithLowestArrivalTime(processList);
+			if (!processList.isEmpty()) {
+				Process p = getProcessWithLowestArrivalTime(processList);
 			
-			/*
-			 *  If the arrival time is less than or equal to current time, 
-			 *  add process to queue (Q in description/pseudocode)
-			 */
-			if (p.getArrivalTime() <= currentTime) {
-				// Add process to queue
-				priorityQueue.insert(p.getPriority(), p);
-				// Remove from processList
-				processList.remove(p);
+				/*
+				 *  If the arrival time is less than or equal to current time, 
+				 *  add process to queue (Q in description/pseudocode)
+				 */
+				if (p.getArrivalTime() <= currentTime) {
+					// Add process to queue
+					priorityQueue.insert(p.getPriority(), p);
+					// Remove from processList
+					processList.remove(p);
+				}
 			}
 			
 			/*
@@ -81,7 +83,7 @@ public class ProcessScheduling {
 				currentlyRunning.setStartTime(currentTime); // Set the start time for the process
 				printRemovedProcess(currentlyRunning, currentTime); 
 				// Update the totalWaitTime variable
-				totalWaitTime = totalWaitTime + currentTime - currentlyRunning.getArrivalTime();
+				totalWaitTime += calculateWaitTime(currentTime, currentlyRunning.getArrivalTime());
 			}
 			
 			/*
@@ -91,7 +93,7 @@ public class ProcessScheduling {
 			if (currentlyRunning != null &&
 					currentlyRunning.getEndTime() <= currentTime) {
 				running = false; // Update running flag
-				updateWaitTimesAndPriorities(priorityQueue, currentTime); // Update wait times and priorities
+				updatePriorities(priorityQueue, processList, currentTime); // Update priorities
 			}
 			
 			// Increment time
@@ -102,32 +104,32 @@ public class ProcessScheduling {
 		 * Once processList (or "D") is empty, run the same loop but with priorityQueue(or "Q")
 		 * until it is empty
 		 */
-		while(!priorityQueue.isEmpty()) {
-			// If no process is running:
-			if (running == false) {
-				// Save the lowest priority process as the "currentlyRunning" process.
-				currentlyRunning = priorityQueue.removeMin().getValue();
-				running = true; // Set running flag to true
-				currentlyRunning.setStartTime(currentTime); // Set the start time for the process
-				printRemovedProcess(currentlyRunning, currentTime); // Print the info on the process
-				// Update the totalWaitTime variable
-				totalWaitTime = totalWaitTime + currentTime - currentlyRunning.getArrivalTime();
-			}
-			
-			/*
-			 * If the process that is running has finished
-			 * update the running flag, the wait times and the priorities
-			 */
-			if (currentlyRunning != null &&
-					currentlyRunning.getEndTime() <= currentTime) {
-				
-				running = false; // Update running flag
-				updateWaitTimesAndPriorities(priorityQueue, currentTime); // Update wait times and priorities
-			}
-
-			// Increment time
-			currentTime++;
- 		}
+//		while(!priorityQueue.isEmpty()) {
+//			// If no process is running:
+//			if (running == false) {
+//				// Save the lowest priority process as the "currentlyRunning" process.
+//				currentlyRunning = priorityQueue.removeMin().getValue();
+//				running = true; // Set running flag to true
+//				currentlyRunning.setStartTime(currentTime); // Set the start time for the process
+//				printRemovedProcess(currentlyRunning, currentTime); // Print the info on the process
+//				// Update the totalWaitTime variable
+//				totalWaitTime += calculateWaitTime(currentTime, currentlyRunning.getArrivalTime());
+//			}
+//			
+//			/*
+//			 * If the process that is running has finished
+//			 * update the running flag, the wait times and the priorities
+//			 */
+//			if (currentlyRunning != null &&
+//					currentlyRunning.getEndTime() <= currentTime) {
+//				
+//				running = false; // Update running flag
+//				updatePriorities(priorityQueue, processList, currentTime); // Update wait times and priorities
+//			}
+//
+//			// Increment time
+//			currentTime++;
+// 		}
 		
 		// Print out the total and average wait times
 		try {
@@ -146,17 +148,20 @@ public class ProcessScheduling {
 	 * @param priorityQueue - the queue to work on
 	 * @param currentTime - the current time as of when this method was called
 	 */
-	public static void updateWaitTimesAndPriorities(
-			HeapAdaptablePriorityQueue<Integer, Process> priorityQueue, int currentTime) {
+	public static void updatePriorities(
+			HeapAdaptablePriorityQueue<Integer, Process> priorityQueue, ArrayList<Process> processList, int currentTime) {
 		// Iterate over the items in the priorityQueue
 		for (Entry<Integer, Process> e : priorityQueue.heap) {
-			e.getValue().setWaitTime(currentTime);	// Set the wait time based on the current wait time
 			// If the wait time is greater than the MAX_WAIT_TIME, update the priority
-			if (e.getValue().getWaitTime() > MAX_WAIT_TIME) {
+			if (calculateWaitTime(currentTime, e.getValue().getArrivalTime()) > MAX_WAIT_TIME) {
 				e.getValue().setPriority(e.getValue().getPriority() - 1);
 				priorityQueue.replaceKey(e, e.getValue().getPriority());
 			}
 		}
+	}
+	
+	public static int calculateWaitTime(int currentTime, int arrivalTime) {
+		return currentTime - arrivalTime;
 	}
 	
 	/**
@@ -165,10 +170,10 @@ public class ProcessScheduling {
 	 * @param currentTime - the currentTime that the process is being removed
 	 */
 	public static void printRemovedProcess(Process p, int currentTime) {
-		int waitTime = currentTime - p.getArrivalTime();
 		try {
 			fw.write("Process removed from queue is: id = " + p.getId() +
-					", at time " + p.getStartTime() + ", wait time = " + waitTime);
+					", at time " + p.getStartTime() + ", wait time = " +
+					calculateWaitTime(currentTime, p.getArrivalTime()));
 			fw.write("\nProcess id = " + p.getId());
 			fw.write("\n\tPriority = " + p.getPriority());
 			fw.write("\n\tArrival = " + p.getArrivalTime());
@@ -220,7 +225,6 @@ public class ProcessScheduling {
 				e.printStackTrace();
 			}
 		}
-		
 		return processList;
 	}
 	
