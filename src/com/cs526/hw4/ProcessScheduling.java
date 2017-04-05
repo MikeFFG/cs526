@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.io.FileReader;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 
 /**
  * Main class for implementing Process Scheduler assignment from CS526 Homework 4.
@@ -11,12 +13,16 @@ import java.io.BufferedReader;
  * To pass in different input files, use the first command line argument to input
  * the path. Easiest way to do so is to put the input file in the root folder of
  * the project and just input something like "sample_input_1.txt" (no quotation marks needed).
+ * 
+ * Output file process_scheduling_out.txt will appear in the root folder of the project.
  * @author Michael Burke
- *
  */
 public class ProcessScheduling {
 	// Maximum wait time constant
 	public static final int MAX_WAIT_TIME = 10;
+	private static final String FILENAME = "process_scheduling_out.txt";
+	private static BufferedWriter bw = null;
+	private static FileWriter fw = null;
 	
 	/**
 	 * Main program class
@@ -36,6 +42,9 @@ public class ProcessScheduling {
 		boolean running = false;				// Stores whether or not a process is running 
 		Process currentlyRunning = null;		// Stores the currently running process
 		double totalWaitTime = 0;				// Stores the total wait time
+		
+		// Initialize file output
+		initializeFileOutput();
 		/*
 		 *  Stores the initial processList size to be used in the calculation of
 		 *  the average wait time at the end of the program
@@ -121,8 +130,15 @@ public class ProcessScheduling {
  		}
 		
 		// Print out the total and average wait times
-		System.out.println("Total wait time = " + totalWaitTime);
-		System.out.println("Average wait time = " + totalWaitTime / size);
+		try {
+			fw.write("Total wait time = " + totalWaitTime + "\n");
+			fw.write("Average wait time = " + totalWaitTime / size);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		// Close file writer resources
+		closeResources();
 	}
 	
 	/**
@@ -150,13 +166,17 @@ public class ProcessScheduling {
 	 */
 	public static void printRemovedProcess(Process p, int currentTime) {
 		int waitTime = currentTime - p.getArrivalTime();
-		System.out.println("Process removed from queue is: id = " + p.getId() +
-				", at time " + p.getStartTime() + ", wait time = " + waitTime);
-		System.out.println("Process id = " + p.getId());
-		System.out.println("\tPriority = " + p.getPriority());
-		System.out.println("\tArrival = " + p.getArrivalTime());
-		System.out.println("\tDuration = " + p.getDuration());
-		System.out.println("");
+		try {
+			fw.write("Process removed from queue is: id = " + p.getId() +
+					", at time " + p.getStartTime() + ", wait time = " + waitTime);
+			fw.write("\nProcess id = " + p.getId());
+			fw.write("\n\tPriority = " + p.getPriority());
+			fw.write("\n\tArrival = " + p.getArrivalTime());
+			fw.write("\n\tDuration = " + p.getDuration());
+			fw.write("\n\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	} 
 	
 	/**
@@ -219,5 +239,40 @@ public class ProcessScheduling {
 		}
 		
 		return earliestProcess;
+	}
+	
+	/**
+	 * Initialize the file writing resources
+	 */
+	public static void initializeFileOutput() {
+		try {
+			/*
+			 *  Simply clears out the file from the previous run.
+			 *  This is necessary so that each run doesn't keep appending
+			 *  to same file. Kind of hacky, but it works.
+			 */
+			fw = new FileWriter(FILENAME); 
+			
+			// Now we set it up so we can append to the file
+			fw = new FileWriter(FILENAME, true);
+			bw = new BufferedWriter(fw);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Close the file writing resources.
+	 */
+	public static void closeResources() {
+		try {
+			if (bw != null)
+				bw.close();
+
+			if (fw != null)
+				fw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
