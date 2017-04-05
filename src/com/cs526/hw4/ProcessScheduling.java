@@ -125,6 +125,7 @@ public class ProcessScheduling {
 			HeapAdaptablePriorityQueue<Integer, Process> priorityQueue, int currentTime) {
 		// Iterate over the items in the priorityQueue
 		for (Entry<Integer, Process> e : priorityQueue.heap) {
+			
 			// If the wait time is greater than the MAX_WAIT_TIME, update the priority
 			if (calculateWaitTime(currentTime, e.getValue().getArrivalTime()) >= MAX_WAIT_TIME) {
 				e.getValue().setPriority(e.getValue().getPriority() - 1);
