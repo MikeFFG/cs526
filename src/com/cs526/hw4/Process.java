@@ -12,7 +12,6 @@ public class Process {
 	private int arrivalTime;
 	private int duration;
 	private int priority;
-	private int waitTime;
 	private int startTime;
 	
 	public Process(int id, int priority, int duration, int arrivalTime) {
@@ -21,16 +20,6 @@ public class Process {
 		this.duration = duration;
 		this.arrivalTime = arrivalTime;
 	}
-	
-//	public void setWaitTime(int currentTime) {
-//		if (currentTime - arrivalTime > 0) {
-//			waitTime = currentTime - arrivalTime;
-//		}
-//	}
-//	
-//	public int getWaitTime() {
-//		return waitTime;
-//	}
 	
 	public void setStartTime(int startTime) {
 		this.startTime = startTime;

@@ -45,6 +45,7 @@ public class ProcessScheduling {
 		
 		// Initialize file output
 		initializeFileOutput();
+		
 		/*
 		 *  Stores the initial processList size to be used in the calculation of
 		 *  the average wait time at the end of the program
@@ -82,6 +83,7 @@ public class ProcessScheduling {
 				running = true; // Set running flag to true
 				currentlyRunning.setStartTime(currentTime); // Set the start time for the process
 				printRemovedProcess(currentlyRunning, currentTime); 
+				
 				// Update the totalWaitTime variable
 				totalWaitTime += calculateWaitTime(currentTime, currentlyRunning.getArrivalTime());
 			}
@@ -93,43 +95,14 @@ public class ProcessScheduling {
 			if (currentlyRunning != null &&
 					currentlyRunning.getEndTime() <= currentTime) {
 				running = false; // Update running flag
-				updatePriorities(priorityQueue, processList, currentTime); // Update priorities
+				System.out.println("CurrentlyRunning is " + currentlyRunning.getId());
+				System.out.println("Current Time is " + currentTime);
+				updatePriorities(priorityQueue, currentTime); // Update priorities
 			}
 			
 			// Increment time
 			currentTime++;
 		}
-		
-		/*
-		 * Once processList (or "D") is empty, run the same loop but with priorityQueue(or "Q")
-		 * until it is empty
-		 */
-//		while(!priorityQueue.isEmpty()) {
-//			// If no process is running:
-//			if (running == false) {
-//				// Save the lowest priority process as the "currentlyRunning" process.
-//				currentlyRunning = priorityQueue.removeMin().getValue();
-//				running = true; // Set running flag to true
-//				currentlyRunning.setStartTime(currentTime); // Set the start time for the process
-//				printRemovedProcess(currentlyRunning, currentTime); // Print the info on the process
-//				// Update the totalWaitTime variable
-//				totalWaitTime += calculateWaitTime(currentTime, currentlyRunning.getArrivalTime());
-//			}
-//			
-//			/*
-//			 * If the process that is running has finished
-//			 * update the running flag, the wait times and the priorities
-//			 */
-//			if (currentlyRunning != null &&
-//					currentlyRunning.getEndTime() <= currentTime) {
-//				
-//				running = false; // Update running flag
-//				updatePriorities(priorityQueue, processList, currentTime); // Update wait times and priorities
-//			}
-//
-//			// Increment time
-//			currentTime++;
-// 		}
 		
 		// Print out the total and average wait times
 		try {
@@ -149,11 +122,11 @@ public class ProcessScheduling {
 	 * @param currentTime - the current time as of when this method was called
 	 */
 	public static void updatePriorities(
-			HeapAdaptablePriorityQueue<Integer, Process> priorityQueue, ArrayList<Process> processList, int currentTime) {
+			HeapAdaptablePriorityQueue<Integer, Process> priorityQueue, int currentTime) {
 		// Iterate over the items in the priorityQueue
 		for (Entry<Integer, Process> e : priorityQueue.heap) {
 			// If the wait time is greater than the MAX_WAIT_TIME, update the priority
-			if (calculateWaitTime(currentTime, e.getValue().getArrivalTime()) > MAX_WAIT_TIME) {
+			if (calculateWaitTime(currentTime, e.getValue().getArrivalTime()) >= MAX_WAIT_TIME) {
 				e.getValue().setPriority(e.getValue().getPriority() - 1);
 				priorityQueue.replaceKey(e, e.getValue().getPriority());
 			}
