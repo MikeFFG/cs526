@@ -30,7 +30,7 @@ public class Process {
 	}
 	
 	public int getEndTime() {
-		return startTime + duration - 1;
+		return startTime + duration;
 	}
 
 	public int getId() {

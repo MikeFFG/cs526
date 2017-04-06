@@ -70,6 +70,13 @@ public class ProcessScheduling {
 					priorityQueue.insert(p.getPriority(), p);
 					// Remove from processList
 					processList.remove(p);
+					if (processList.isEmpty()) {
+						try {
+							fw.write("List is empty\n");
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
 				}
 			}
 			
@@ -83,10 +90,12 @@ public class ProcessScheduling {
 				running = true; // Set running flag to true
 				currentlyRunning.setStartTime(currentTime); // Set the start time for the process
 				printRemovedProcess(currentlyRunning, currentTime); 
-				
+				updatePriorities(priorityQueue, currentTime); // Update priorities
 				// Update the totalWaitTime variable
 				totalWaitTime += calculateWaitTime(currentTime, currentlyRunning.getArrivalTime());
 			}
+			// Increment time
+			currentTime++;
 			
 			/*
 			 * If the process that is running has finished
@@ -95,12 +104,38 @@ public class ProcessScheduling {
 			if (currentlyRunning != null &&
 					currentlyRunning.getEndTime() <= currentTime) {
 				running = false; // Update running flag
-				updatePriorities(priorityQueue, currentTime); // Update priorities
+				
 			}
 			
-			// Increment time
-			currentTime++;
 		}
+		
+//		try {
+//			fw.write("List is empty\n");
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		
+//		while(!priorityQueue.isEmpty()) {
+//
+//			
+//			if (running == false) {
+//				currentlyRunning = priorityQueue.removeMin().getValue();
+//				running = true;
+//				currentlyRunning.setStartTime(currentTime);
+//				printRemovedProcess(currentlyRunning, currentTime);
+//				updatePriorities(priorityQueue, currentTime);
+//				totalWaitTime = totalWaitTime + currentTime - currentlyRunning.getArrivalTime();
+//			}
+//			
+//			currentTime++;
+//			if (currentlyRunning != null &&
+//					currentlyRunning.getEndTime() <= currentTime) {
+//				
+//				running = false;
+//				
+//			}
+//			
+// 		}
 		
 		// Print out the total and average wait times
 		try {
@@ -123,6 +158,7 @@ public class ProcessScheduling {
 			HeapAdaptablePriorityQueue<Integer, Process> priorityQueue, int currentTime) {
 		// Iterate over the items in the priorityQueue
 		for (Entry<Integer, Process> e : priorityQueue.heap) {
+
 			
 			// If the wait time is greater than the MAX_WAIT_TIME, update the priority
 			if (calculateWaitTime(currentTime, e.getValue().getArrivalTime()) > MAX_WAIT_TIME) {

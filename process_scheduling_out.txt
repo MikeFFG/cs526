@@ -1,62 +1,62 @@
-Process removed from queue is: id = 1, at time 2, wait time = 0
+Process removed from queue is: id = 1, at time 5, wait time = 0
 Process id = 1
-	Priority = 9
-	Arrival = 2
-	Duration = 19
-
-Process removed from queue is: id = 4, at time 21, wait time = 0
-Process id = 4
-	Priority = 6
-	Arrival = 21
-	Duration = 15
-
-Process removed from queue is: id = 5, at time 36, wait time = 11
-Process id = 5
-	Priority = 7
-	Arrival = 25
-	Duration = 19
-
-Process removed from queue is: id = 7, at time 55, wait time = 13
-Process id = 7
 	Priority = 1
-	Arrival = 42
+	Arrival = 5
+	Duration = 17
+
+Process removed from queue is: id = 2, at time 22, wait time = 11
+Process id = 2
+	Priority = 3
+	Arrival = 11
 	Duration = 11
 
-Process removed from queue is: id = 9, at time 66, wait time = 7
-Process id = 9
-	Priority = 1
-	Arrival = 59
-	Duration = 9
-
-Process removed from queue is: id = 8, at time 75, wait time = 26
-Process id = 8
+Process removed from queue is: id = 3, at time 33, wait time = 14
+Process id = 3
 	Priority = 3
-	Arrival = 49
+	Arrival = 19
+	Duration = 7
+
+Process removed from queue is: id = 6, at time 40, wait time = 4
+Process id = 6
+	Priority = 2
+	Arrival = 36
+	Duration = 7
+
+Process removed from queue is: id = 5, at time 47, wait time = 21
+Process id = 5
+	Priority = 2
+	Arrival = 26
+	Duration = 18
+
+List is emptyProcess removed from queue is: id = 10, at time 65, wait time = 4
+Process id = 10
+	Priority = 1
+	Arrival = 61
 	Duration = 20
 
-Process removed from queue is: id = 6, at time 95, wait time = 63
-Process id = 6
-	Priority = 3
-	Arrival = 32
-	Duration = 12
-
-Process removed from queue is: id = 2, at time 107, wait time = 99
-Process id = 2
+Process removed from queue is: id = 9, at time 85, wait time = 29
+Process id = 9
 	Priority = 2
-	Arrival = 8
-	Duration = 6
+	Arrival = 56
+	Duration = 17
 
-Process removed from queue is: id = 3, at time 113, wait time = 100
-Process id = 3
-	Priority = 2
-	Arrival = 13
+Process removed from queue is: id = 7, at time 102, wait time = 56
+Process id = 7
+	Priority = 1
+	Arrival = 46
 	Duration = 9
 
-Process removed from queue is: id = 10, at time 122, wait time = 53
-Process id = 10
-	Priority = 3
-	Arrival = 69
-	Duration = 10
+Process removed from queue is: id = 8, at time 111, wait time = 60
+Process id = 8
+	Priority = 1
+	Arrival = 51
+	Duration = 14
 
-Total wait time = 372.0
-Average wait time = 37.2
+Process removed from queue is: id = 4, at time 125, wait time = 105
+Process id = 4
+	Priority = 1
+	Arrival = 20
+	Duration = 13
+
+Total wait time = 304.0
+Average wait time = 30.4
